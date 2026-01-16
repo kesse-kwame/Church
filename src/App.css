@@ -1,0 +1,644 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', 'Inter', sans-serif;
+  background: #f5f6fa;
+  color: #333;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+/* App Layout */
+.app-layout {
+  display: flex;
+  height: 100vh;
+  background: #f5f6fa;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  background: #f5f6fa;
+}
+
+.page-content {
+  padding: 30px;
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #6a4192 100%);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #0d7f73 0%, #2bd86f 100%);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #c0392b 0%, #a33228 100%);
+}
+
+.btn[disabled] {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-outline {
+  background: white;
+  border: 2px solid #667eea;
+  color: #667eea;
+}
+
+.btn-outline:hover {
+  background: #667eea;
+  color: white;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.btn-edit {
+  background: #3498db;
+  color: white;
+}
+
+.btn-delete {
+  background: #e74c3c;
+  color: white;
+}
+
+.btn-view {
+  background: #9b59b6;
+  color: white;
+}
+
+/* Form Styles */
+.form-control {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+  font-size: 13px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-section {
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.form-section h3 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Table Styles */
+.table-container {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: #f8f9fa;
+  padding: 14px;
+  text-align: left;
+  font-weight: 700;
+  color: #333;
+  border-bottom: 2px solid #e9ecef;
+  font-size: 13px;
+}
+
+td {
+  padding: 14px;
+  border-bottom: 1px solid #e9ecef;
+  font-size: 14px;
+}
+
+tr:hover {
+  background: #f8f9fa;
+}
+
+/* Status Styles */
+.status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status.active {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status.inactive {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.status.visitor {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-badge.present {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.absent {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.status-badge.late {
+  background: #fff3cd;
+  color: #856404;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+}
+
+.empty-state i {
+  color: #ddd;
+  margin-bottom: 20px;
+}
+
+.empty-state h4 {
+  color: #666;
+  margin-bottom: 8px;
+}
+
+/* Attendance Specific */
+.attendance-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.attendance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.attendance-header h2 {
+  color: #333;
+  font-size: 24px;
+}
+
+/* Tab Styles */
+.tab-container {
+  display: flex;
+  gap: 0;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 16px 20px;
+  border: none;
+  background: #f8f9fa;
+  color: #666;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  border-bottom: 3px solid transparent;
+}
+
+.tab-btn:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.tab-btn.active {
+  background: white;
+  color: #667eea;
+  border-bottom-color: #667eea;
+}
+
+.tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.stat-card i {
+  font-size: 32px;
+  color: #667eea;
+  min-width: 50px;
+}
+
+.stat-card.present i {
+  color: #11998e;
+}
+
+.stat-card.absent i {
+  color: #e74c3c;
+}
+
+.stat-card.late i {
+  color: #f39c12;
+}
+
+.stat-card h4 {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 4px;
+}
+
+.stat-card p {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+}
+
+.filter-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+}
+
+/* Reports Styles */
+.reports-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Dashboard styles */
+.dashboard-page .dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 26px;
+}
+
+.dashboard-header .muted {
+  color: #666;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+/* Make the first panel (Recent Attendance) span full width */
+.dashboard-grid > .panel:first-child {
+  grid-column: 1 / -1;
+}
+
+.quick-panel .quick-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.panel {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.quick-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.connection-status .status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.connection-status .online { background: #2ecc71; }
+.connection-status .offline { background: #e74c3c; }
+
+@media (max-width: 900px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+
+.reports-header {
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.reports-header h2 {
+  color: #333;
+  font-size: 24px;
+}
+
+.report-section {
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.report-section h3 {
+  margin-bottom: 20px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rate-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+  height: 24px;
+  position: relative;
+}
+
+.rate-fill {
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.3s;
+}
+
+.rate-bar span {
+  position: absolute;
+  right: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+}
+
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.modal-header h3 {
+  color: #333;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #999;
+  transition: color 0.2s;
+}
+
+.close-modal:hover {
+  color: #333;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+/* Members specific */
+.member-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.member-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.member-join-date {
+  color: #999;
+  font-size: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .filter-section {
+    grid-template-columns: 1fr;
+  }
+
+  .attendance-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .page-content {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  th, td {
+    padding: 10px;
+  }
+}
+
