@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AddMemberModal from './Modals/AddMemberModal';
 
 function Members() {
   const [members, setMembers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [departmentFilter, setDepartmentFilter] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
+  const navigate = useNavigate();
 
   // load via member service (Supabase if configured, otherwise local storage)
   useEffect(() => {
@@ -20,7 +24,24 @@ function Members() {
   const handleAddMember = async (newMember) => {
     try {
       const svc = (await import('../services/memberService')).default;
-      const created = await svc.create(newMember);
+      // Only send fields that exist in the members table
+      const payload = {
+        member_code: newMember.member_code,
+        first_name: newMember.firstName,
+        last_name: newMember.lastName,
+        email: newMember.email,
+        phone: newMember.phone,
+        department: newMember.department || newMember.group,
+        group_name: newMember.group,
+        status: newMember.status
+      };
+      
+      // Remove undefined/empty fields
+      Object.keys(payload).forEach(key => 
+        (payload[key] === '' || payload[key] === null || payload[key] === undefined) && delete payload[key]
+      );
+      
+      const created = await svc.create(payload);
       setMembers(prev => [created, ...prev]);
       setShowAddModal(false);
     } catch (err) {
@@ -95,96 +116,162 @@ function Members() {
     document.body.removeChild(link);
   };
 
-  const filteredMembers = members.filter(member => 
-    `${member.firstName} ${member.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    member.phone.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const departments = Array.from(new Set(members
+    .map(m => m.department || m.group || m.group_name)
+    .filter(Boolean)
+    .map(dep => dep.trim().toLowerCase())
+  ));
+
+  const filteredMembers = members.filter(member => {
+    const fullName = `${member.firstName || member.first_name || ''} ${member.lastName || member.last_name || ''}`.trim();
+    const id = member.id || member.member_code || '';
+    const department = (member.department || member.group || member.group_name || '').toLowerCase();
+    const status = (member.status || 'active').toLowerCase();
+
+    const matchesSearch = [fullName, id, member.email, member.phone]
+      .filter(Boolean)
+      .some(field => field.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    const matchesStatus = statusFilter === 'all' || status === statusFilter;
+    const matchesDepartment = departmentFilter === 'all' || department === departmentFilter;
+
+    return matchesSearch && matchesStatus && matchesDepartment;
+  });
+
+  const getStatusClass = (status) => {
+    const normalized = (status || 'active').toLowerCase();
+    if (normalized.includes('inactive')) return 'inactive';
+    if (normalized.includes('pending')) return 'pending';
+    return 'active';
+  };
+
+  const getAvatar = (member) => {
+    if (member.avatar) return member.avatar;
+    const seed = member.email || member.id || member.firstName || Math.random();
+    return `https://i.pravatar.cc/80?u=${encodeURIComponent(seed)}`;
+  };
 
   return (
-    <div className="members-container">
-      <div className="table-container">
-        <div className="table-header">
-          <h3>All Church Members</h3>
-          <div>
-            <button className="btn btn-success" onClick={exportToCSV}>
-              <i className="fas fa-file-export"></i> Export CSV
-            </button>
-            <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
-              <i className="fas fa-user-plus"></i> Add Member
-            </button>
-          </div>
+    <div className="members-screen">
+      <div className="page-header-row">
+        <div>
+          <h1>Membership Management</h1>
+          <p className="muted">Search, filter and review all members</p>
         </div>
-        
-        <div className="form-group" style={{marginBottom: '20px'}}>
-          <input 
-            type="text" 
-            className="form-control" 
-            placeholder="Search members by name, email, or phone..."
+        <div className="page-header-actions">
+          <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
+            <i className="fas fa-user-plus"></i>
+            Register New Member
+          </button>
+          <button
+            className="btn btn-outline"
+            onClick={() => navigate('/register')}
+          >
+            <i className="fas fa-link"></i>
+            Online Registration Link
+          </button>
+        </div>
+      </div>
+
+      <div className="filters-row">
+        <div className="search-field">
+          <i className="fas fa-search"></i>
+          <input
+            type="text"
+            placeholder="Search by name or ID..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Birth Date</th>
-              <th>Joining Date</th>
-              <th>Group</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredMembers.map(member => (
-              <tr key={member.id}>
-                <td>{member.id}</td>
-                <td>
-                  <div className="member-info">
-                    <div className="member-name">{member.firstName} {member.lastName}</div>
-                    <small className="member-join-date">Joined: {formatDate(member.joinDate)}</small>
-                  </div>
-                </td>
-                <td>{member.email}</td>
-                <td>{member.phone}</td>
-                <td>{member.birthDate ? formatDate(member.birthDate) : 'N/A'}</td>
-                <td>{member.baptismDate ? formatDate(member.baptismDate) : 'N/A'}</td>
-                <td>{member.group || 'Not Assigned'}</td>
-                <td><span className={`status ${member.status.toLowerCase()}`}>{member.status}</span></td>
-                <td>
-                  <div className="action-buttons">
-                    <button className="btn btn-sm btn-edit" title="Edit">
-                      <i className="fas fa-edit"></i>
-                    </button>
-                    <button 
-                      className="btn btn-sm btn-delete" 
-                      title="Delete"
-                      onClick={() => deleteMember(member.id)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
-                    <button className="btn btn-sm btn-view" title="View Details">
-                      <i className="fas fa-eye"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
+        <div className="filter-select">
+          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+            <option value="all">All Statuses</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+            <option value="pending">Pending</option>
+          </select>
+          <i className="fas fa-chevron-down" />
+        </div>
+        <div className="filter-select">
+          <select
+            value={departmentFilter}
+            onChange={(e) => setDepartmentFilter(e.target.value.toLowerCase())}
+          >
+            <option value="all">All Departments</option>
+            {departments.map(dep => (
+              <option key={dep} value={dep.toLowerCase()}>{dep.charAt(0).toUpperCase() + dep.slice(1)}</option>
             ))}
-          </tbody>
-        </table>
-        
-        {filteredMembers.length === 0 && (
-          <div className="empty-state">
-            <i className="fas fa-users fa-3x"></i>
-            <h4>No Members Found</h4>
-            <p>Try adjusting your search or add a new member</p>
-          </div>
-        )}
+          </select>
+          <i className="fas fa-chevron-down" />
+        </div>
+      </div>
+
+      <div className="members-layout">
+        <div className="table-card">
+          <table className="members-table">
+            <thead>
+              <tr>
+                <th>Member</th>
+                <th>ID</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th className="actions-col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredMembers.map(member => {
+                const fullName = `${member.firstName || member.first_name || ''} ${member.lastName || member.last_name || ''}`.trim() || member.name || 'Unnamed';
+                const department = member.department || member.group || member.group_name || '—';
+                const status = member.status || 'Active';
+
+                return (
+                  <tr key={member.id || fullName}>
+                    <td>
+                      <div className="member-cell">
+                        <img src={getAvatar(member)} alt={fullName} className="member-avatar" />
+                        <div className="member-meta">
+                          <span className="member-name">{fullName}</span>
+                          <span className="member-join">Joined: {formatDate(member.joinDate)}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="muted">{member.id || member.member_code || '—'}</td>
+                    <td>{department}</td>
+                    <td>
+                      <span className={`status-chip ${getStatusClass(status)}`}>
+                        {status}
+                      </span>
+                    </td>
+                    <td className="actions-col">
+                      <button className="view-btn">
+                        View Profile
+                      </button>
+                      <button
+                        className="icon-action danger"
+                        onClick={() => deleteMember(member.id)}
+                        title="Delete member"
+                      >
+                        <i className="fas fa-trash-alt" />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+
+          {filteredMembers.length === 0 && (
+            <div className="empty-state">
+              <i className="fas fa-users fa-3x"></i>
+              <h4>No Members Found</h4>
+              <p>Try adjusting your search or add a new member</p>
+            </div>
+          )}
+        </div>
+
+        <div className="details-card">
+          <p className="muted centered">Select a member from the list to view details.</p>
+        </div>
       </div>
 
       {showAddModal && (

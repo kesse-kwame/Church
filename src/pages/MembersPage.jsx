@@ -3,7 +3,7 @@ import Members from '../components/Members';
 
 export default function MembersPage() {
   return (
-    <div className="page-content">
+    <div className="page-shell members-page">
       <Members />
     </div>
   );

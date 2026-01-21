@@ -18,21 +18,28 @@ create table if not exists members (
   member_code text unique,
   first_name text,
   last_name text,
-  full_name text generated always as (concat_ws(' ', first_name, last_name)) stored,
   email text,
   phone text,
   dob date,
+  birthDate date,
+  baptismDate date,
+  address text,
   gender text,
   family_id uuid references families(id) on delete set null,
+  familyId text,
+  familyRole text,
   department text,
   group_name text,
+  "group" text,
   status text default 'Active',
+  joinDate text,
+  source text,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
 
 create index if not exists idx_members_member_code on members(member_code);
-create index if not exists idx_members_full_name on members(full_name);
+create index if not exists idx_members_email on members(email);
 
 -- 4. Service types
 create table if not exists service_types (

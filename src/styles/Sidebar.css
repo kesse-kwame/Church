@@ -1,18 +1,18 @@
-/* Sidebar Styles */
+/* Sidebar Styles - white background with black icons and text */
 .sidebar {
   width: 280px;
   height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: #ffffff !important;
+  color: #000000;
   display: flex;
   flex-direction: column;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  overflow-y: auto;
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 1000;
+  border-right: 1px solid #e5e7eb;
+  padding: 18px 0;
+  overflow-y: auto;
+  z-index: 100;
 }
 
 .sidebar.collapsed {
@@ -20,28 +20,31 @@
 }
 
 .sidebar-header {
-  padding: 20px;
+  padding: 0 20px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  gap: 10px;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 20px;
+  gap: 10px;
   font-weight: 700;
+  color: #000000;
+  font-size: 15px;
 }
 
-/* Make the header text explicitly white for better contrast */
-.logo span {
-  color: #ffffff !important;
-}
 .logo i {
-  font-size: 28px;
+  background: transparent;
+  color: #000000;
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 18px;
+}
+
+.logo span {
+  color: #000000;
 }
 
 .sidebar.collapsed .logo span {
@@ -49,59 +52,44 @@
 }
 
 .toggle-btn {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 18px;
-  padding: 5px;
-  border-radius: 5px;
-  transition: background 0.2s;
-}
-
-.toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  display: none;
 }
 
 .sidebar-nav {
-  flex: 1;
-  padding: 15px 0;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 0;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: 12px 20px;
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  transition: all 0.2s;
-  border: none;
-  background: none;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
+  gap: 12px;
+  padding: 12px 24px;
+  color: #000000;
+  border-left: 4px solid transparent;
+  transition: all 0.2s ease;
+  font-weight: 600;
   font-size: 14px;
-  font-weight: 500;
-}
-
-.nav-item:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-}
-
-.nav-item.active {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  border-left: 4px solid white;
-  padding-left: 16px;
 }
 
 .nav-item i {
-  width: 24px;
+  width: 20px;
   text-align: center;
-  font-size: 18px;
+  font-size: 16px;
+  color: inherit;
+}
+
+.nav-item:hover {
+  background: #f0f0f0;
+  color: #000000;
+}
+
+.nav-item.active {
+  background: #e0e0e0;
+  border-left-color: #000000;
+  color: #000000;
 }
 
 .sidebar.collapsed .nav-item span {
@@ -109,99 +97,64 @@
 }
 
 .sidebar-footer {
-  padding: 15px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto;
+  padding: 12px 20px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .logout-btn {
   width: 100%;
   padding: 12px;
-  background: rgba(255, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
+  border-radius: 10px;
+  background: #fff1f2;
+  border: 1px solid #fee2e2;
+  color: #b91c1c;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  transition: all 0.2s;
-  font-size: 14px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s ease;
 }
 
 .logout-btn:hover {
-  background: rgba(255, 0, 0, 0.3);
+  background: #ffe4e6;
 }
 
 .sidebar.collapsed .logout-btn span {
   display: none;
 }
 
-/* Scrollbar styling for sidebar */
 .sidebar::-webkit-scrollbar {
   width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 3px;
 }
 
 .sidebar::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.sidebar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 3px;
-}
-
-.sidebar::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.4);
-}
-
-/* App Layout */
-.app-layout {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.main-content {
-  flex: 1;
-  margin-left: 280px;
-  overflow-y: auto;
-  background: #f5f6fa;
-  transition: margin-left 0.3s ease;
-}
-
-.sidebar.collapsed ~ .main-content {
-  margin-left: 80px;
-}
-
-.page-content {
-  padding: 30px;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
   .sidebar {
-    width: 70px;
+    width: 72px;
   }
 
   .sidebar.collapsed {
-    width: 70px;
+    width: 72px;
   }
 
   .logo span,
   .nav-item span,
   .logout-btn span {
     display: none;
-  }
-
-  .main-content {
-    margin-left: 70px;
-  }
-
-  .page-content {
-    padding: 15px;
   }
 }
 

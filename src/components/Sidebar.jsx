@@ -8,7 +8,7 @@ function Sidebar() {
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => location.pathname.startsWith(path);
 
   return (
     <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
@@ -37,9 +37,28 @@ function Sidebar() {
           <i className="fas fa-calendar-check"></i>
           {!isCollapsed && <span>Attendance</span>}
         </Link>
+
+        <Link to="/finances" title="Finances" className={`nav-item ${isActive('/finances') ? 'active' : ''}`}>
+          <i className="fas fa-wallet"></i>
+          {!isCollapsed && <span>Finances</span>}
+        </Link>
+
+        <Link to="/programs" title="Programs & Events" className={`nav-item ${isActive('/programs') ? 'active' : ''}`}>
+          <i className="fas fa-calendar-alt"></i>
+          {!isCollapsed && <span>Programs & Events</span>}
+        </Link>
+
+        <Link to="/staff" title="Staff & Payroll" className={`nav-item ${isActive('/staff') ? 'active' : ''}`}>
+          <i className="fas fa-briefcase"></i>
+          {!isCollapsed && <span>Staff & Payroll</span>}
+        </Link>
       </nav>
 
       <div className="sidebar-footer">
+        <Link to="/settings" className={`nav-item ${isActive('/settings') ? 'active' : ''}`}>
+          <i className="fas fa-cog"></i>
+          {!isCollapsed && <span>Settings</span>}
+        </Link>
         <button className="logout-btn" title="Logout">
           <i className="fas fa-sign-out-alt"></i>
           {!isCollapsed && <span>Logout</span>}

@@ -112,9 +112,9 @@ function AddMemberModal({ onClose, onSave, member, members = [], isEditing = fal
 
             <div className="form-row">
               <div className="form-group">
-                <label htmlFor="group">Group</label>
+                <label htmlFor="group">Department</label>
                 <select id="group" name="group" className="form-control" value={formData.group} onChange={handleChange}>
-                  <option value="">Select a group</option>
+                  <option value="">Select a department</option>
                   <option value="Youth Group">Youth Group</option>
                   <option value="Women's Fellowship">Women's Fellowship</option>
                   <option value="Men's Prayer">Men's Prayer</option>
